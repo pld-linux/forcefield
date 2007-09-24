@@ -1,0 +1,11 @@
+--- forcefield-0.16/src/lib/utilRevelation.py.EL	2007-03-17 17:10:08.000000000 +0100
++++ forcefield-0.16/src/lib/utilRevelation.py	2007-05-04 22:43:10.000000000 +0200
+@@ -23,7 +23,7 @@
+ # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ #
+ 
+-import crack, math, string
++import cracklib, math, string
+ 
+ def check_password(password):
+ 	"Checks if a password is valid"
