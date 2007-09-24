@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Forcefield
+GenericName=Forcefield
+Comment=TrueCrypt frontend for GNOME
+Comment[pl]=GNOME-owe GUI dla TrueCrypta
+Exec=forcefield
+Terminal=false
+Icon=forcefield.png
+Type=Application
+Encoding=UTF-8
+X-KDE-StartupNotify=false
+Categories=GNOME;Application;System;
