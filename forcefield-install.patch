@@ -1,0 +1,18 @@
+diff -urN forcefield-20070924/data/mime/Makefile.am forcefield-20070924.new/data/mime/Makefile.am
+--- forcefield-20070924/data/mime/Makefile.am	2007-09-24 12:54:17.000000000 +0200
++++ forcefield-20070924.new/data/mime/Makefile.am	2007-09-24 13:07:53.703424155 +0200
+@@ -17,14 +17,3 @@
+ 	sed \
+ 		-e "s|\@VERSION\@|$(VERSION)|" \
+ 		forcefield.desktop.in > forcefield.desktop
+-
+-
+-install-data-hook:
+-if HAVE_FDO_MIME
+-	$(UPDATE_MIME_DATABASE) "$(datadir)/mime"
+-endif
+-
+-if HAVE_FDO_DESKTOP
+-	$(UPDATE_DESKTOP_DATABASE)
+-endif
+-
