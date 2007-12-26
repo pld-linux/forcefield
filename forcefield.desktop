@@ -8,4 +8,4 @@ Terminal=false
 Icon=forcefield
 Type=Application
 X-KDE-StartupNotify=false
-Categories=GNOME;Application;System;
+Categories=GNOME;System;
