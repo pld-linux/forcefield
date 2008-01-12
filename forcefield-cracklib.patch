@@ -5,7 +5,7 @@
  #
  
 -import crack, math, string
-+import cracklib, math, string
++import cracklib as crack, math, string
  
  def check_password(password):
  	"Checks if a password is valid"
