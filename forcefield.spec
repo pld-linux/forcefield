@@ -1,14 +1,13 @@
 #
 # TODO:
-# - more meaningful translation
+# - real descriptions
 # - check BR-s and R-s
 # - investigate if the cracklib patch realy make forcefield *not*
 #   require python-crypt
-# - correct update_icons
 #
 %define     _snap   20070924
 Summary:	A GNOME GUI for TrueCrypt
-Summary(pl.UTF-8):GNOME-owe GUI dla TrueCrypta
+Summary(pl.UTF-8):	Graficzny interfejs GNOME do TrueCrypta
 Name:		forcefield
 Version:	0.92
 Release:	0.%{_snap}
@@ -19,23 +18,28 @@ Group:		Applications/System
 Source0:	%{name}-%{_snap}.tar.bz2
 # Source0-md5:	6e403a32487c24eeb0fea2ec30500276
 Source1:	%{name}.desktop
-URL:		http://www.bockcay.de/forcefield
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-cracklib.patch
-BuildRequires:	automake >= 1.9
-BuildRequires:	python >= 2.5
+URL:		http://www.bockcay.de/forcefield
+BuildRequires:	automake >= 1:1.9
+BuildRequires:	python >= 1:2.5
 BuildRequires:	python-gnome-devel
-BuildRequires:	python-pygtk-devel
-Requires:	GConf2 >= 2.4.0
+BuildRequires:	python-pygtk-devel >= 2:2.0
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.311
+Requires(post,preun):	GConf2 >= 2.4.0
+Requires(post,postun):	gtk+2
+Requires(post,postun):	hicolor-icon-theme
+Requires(post,postun):	shared-mime-info
+%pyrequires_eq	python
 Requires:	cracklib
-Requires:	python >= 2.5
 Requires:	python-cracklib
 Requires:	python-gnome
 Requires:	python-gnome-extras
 Requires:	python-gnome-gconf
 Requires:	python-pexpect
-Requires:	python-pygtk-glade
-Requires:	python-pygtk-gtk
+Requires:	python-pygtk-glade >= 2:2.0
+Requires:	python-pygtk-gtk >= 2:2.0
 Requires:	python-pynotify
 Requires:	truecrypt
 BuildArch:	noarch
@@ -45,7 +49,7 @@ Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 A GNOME GUI for TrueCrypt.
 
 %description -l pl.UTF-8
-GNOME-owe GUI dla TrueCrypta.
+Graficzny interfejs GNOME do TrueCrypta.
 
 %prep
 %setup -q -n %{name}-%{_snap}
@@ -57,7 +61,7 @@ GNOME-owe GUI dla TrueCrypta.
 %{__autoconf}
 %{__automake}
 %configure
-%{__perl} -pi -e 's|python2.4|python2.5|g' src/lib/Makefile.in
+%{__perl} -pi -e 's|python2.4|python%{py_ver}|g' src/lib/Makefile.in
 %{__make}
 
 %install
@@ -76,13 +80,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %gconf_schema_install %{name}.schemas
-%update_icon_cache
-%update_mime_database hicolor
+%update_icon_cache hicolor
+%update_mime_database
+
+%preun
+%gconf_schema_uninstall %{name}.schemas
 
 %postun
-%gconf_schema_uninstall
-%update_mime_database hicolor
-
+%update_icon_cache hicolor
+%update_mime_database
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
@@ -91,7 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 %dir %{py_sitedir}/%{name}
 %{py_sitedir}/%{name}/*.py[co]
-%{py_sitedir}/%{name}/*.so
+%attr(755,root,root) %{py_sitedir}/%{name}/*.so
 %{_datadir}/%{name}
 %{_iconsdir}/hicolor/24x24/apps/%{name}.png
 %{_desktopdir}/%{name}.desktop
