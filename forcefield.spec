@@ -2,8 +2,6 @@
 # TODO:
 # - real descriptions
 # - check BR-s and R-s
-# - investigate if the cracklib patch realy make forcefield *not*
-#   require python-crypt
 #
 %define     _snap   20070924
 Summary:	A GNOME GUI for TrueCrypt
@@ -21,12 +19,14 @@ Source1:	%{name}.desktop
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-cracklib.patch
 URL:		http://www.bockcay.de/forcefield
+BuildRequires:	autoconf >= 2.53
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	python >= 1:2.5
 BuildRequires:	python-gnome-devel
 BuildRequires:	python-pygtk-devel >= 2:2.0
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.311
+BuildRequires:	sed >= 4.0
 Requires(post,preun):	GConf2 >= 2.4.0
 Requires(post,postun):	gtk+2
 Requires(post,postun):	hicolor-icon-theme
@@ -56,23 +56,27 @@ Graficzny interfejs GNOME do TrueCrypta.
 %patch0 -p1
 %patch1 -p1
 
+sed -i -e 's|include/python2.4|include/python%{py_ver} $(CFLAGS) -fPIC|g' src/lib/Makefile.am
+# kill precompiled x86 module
+rm data/misc/crack.so
+
 %build
 %{__aclocal}
 %{__autoconf}
 %{__automake}
-%configure
-%{__perl} -pi -e 's|python2.4|python%{py_ver}|g' src/lib/Makefile.in
+%configure \
+	--disable-schemas-install
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 
+%py_postclean
 %find_lang %{name}
 
 %clean
@@ -97,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/gconf/schemas/%{name}.schemas
 %dir %{py_sitedir}/%{name}
 %{py_sitedir}/%{name}/*.py[co]
-%attr(755,root,root) %{py_sitedir}/%{name}/*.so
+%attr(755,root,root) %{py_sitedir}/%{name}/zero_out.so
 %{_datadir}/%{name}
 %{_iconsdir}/hicolor/24x24/apps/%{name}.png
 %{_desktopdir}/%{name}.desktop
