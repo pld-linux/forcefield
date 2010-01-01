@@ -43,7 +43,7 @@ Requires:	python-pygtk-gtk >= 2:2.0
 Requires:	python-pynotify
 Requires:	truecrypt
 BuildArch:	noarch
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A GNOME GUI for TrueCrypt.
