@@ -27,10 +27,10 @@ BuildRequires:	python-pygtk-devel >= 2:2.0
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	sed >= 4.0
-Requires(post,preun):	GConf2 >= 2.4.0
-Requires(post,postun):	gtk+2
+Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	shared-mime-info
+Requires(post,preun):	GConf2 >= 2.4.0
 %pyrequires_eq	python
 Requires:	cracklib
 Requires:	python-cracklib
