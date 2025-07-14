@@ -53,8 +53,8 @@ Graficzny interfejs GNOME do TrueCrypta.
 
 %prep
 %setup -q -n %{name}-%{_snap}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 sed -i -e 's|include/python2.4|include/python%{py_ver} $(CFLAGS) -fPIC|g' src/lib/Makefile.am
 # kill precompiled x86 module
